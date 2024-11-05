@@ -17,11 +17,11 @@ These FLOS tools are:
     \item Project X-Ray \cite{gh:prjxray}
 \end{itemize}
 
-\noindent In this context the workflow to generate a bitstream from VHDL code is as follows:
+\noindent In this context, the workflow to generate a bitstream from VHDL code is as follows:
 
 \begin{itemize}
     \item First, GHDL tool compiles the VHDL code of the design.
-    \item Second, ghdl-yosys-plugin import the synthesized code to Yosys. 
+    \item Second, ghdl-yosys-plugin imports the synthesized code to Yosys. 
 \footnote{This plugin is necessary because Yosys, by default, is designed to synthesize verilog.} 
 \footnote{ghdl-yosys-plugin is a thin layer that converts the internal representation of \mintinline[breaklines]{bash}{--synth} to Yosys’ C API.}
     \item Then, Yosys synthesis suite performs the synthesis/mapping for Xilinx 7-Series FPGAs.
@@ -29,7 +29,7 @@ These FLOS tools are:
     \item Finally, Project X-Ray generates the bitstream.
 \end{itemize}
 
-\noindent In addition to this, openFPGALoader \cite{gh:openFPGALoader} is used to load the output bitstream into the Arty FPGAs.
+\noindent In addition to this, openFPGALoader \cite{gh:openFPGALoader} is used to load the output bitstream into the Arty FPGAs, see section \ref{ofl}.
 
 \vspace{5mm}
 

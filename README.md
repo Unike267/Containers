@@ -8,7 +8,7 @@ The **goal** of this repository is to build 🔨 and push 📤 in continuous int
     - This container has: `latex` compiler with `pygments` program to use `minted` package.
 
 - The compiled PDF document is available in the [actions](https://github.com/Unike267/Containers/actions) of this repository.
-    - Through the USER-GUIDE workflow (branch `Impl-FLOS-UG`).
+    - Through the `user_guide` workflow (branch `Impl-FLOS-UG`).
         - Click in the `action runs` and download PDF (it's as an artifact)
 
 

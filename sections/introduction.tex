@@ -44,6 +44,8 @@ These FLOS tools are:
 
 \subsection{Shell/Bash script}
 
+\label{shell:script}
+
 This container has the necessary FLOS tools installed inside it to generate bitstreams from your VHDL code. 
 However, to automate the bitstream generation process, you can generate a shell/bash script \textit{(.sh)}.
 This script will be executed inside the container and will perform all the steps to generate the bitstream using the internal FLOS tools installed in it.
@@ -63,7 +65,7 @@ More specifically, the part of the shell/bash code whose compile the VHDL code w
 
 \noindent To execute the sheel/bash script through the container you must add the argument \ref{cod:1} to open a shell inside it and execute your script. 
 With this command you can execute several commands inside the open terminal by concatenating them through \textit{\&\&} symbol. 
-For example, if you want to set a environment variable and then execute your script you can run \say{\mintinline[breaklines]{bash}{EnvVariable=YOUR_envVARIABLE && ./your_bash _script.sh}}.
+For example, if you want to set a environment variable and then execute your script you can run \say{\mintinline[breaklines]{bash}{EnvVariable=YOUR_envVARIABLE && ./your_bash_script.sh}}.
 
 \begin{code}
 %\begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,breaklines,linenos]{bash}
@@ -152,6 +154,8 @@ That is, when a single dash is used each letter is an argument and several argum
 In this case the scheme takes the form \mintinline[breaklines]{bash}{(pwd):/wrk:Z}, which means that the host directory is the directory where the run command is executed, the container directory is \mintinline[breaklines]{bash}{/wrk} and the option \mintinline[breaklines]{bash}{:Z} tells Podman the label of the container content.
             \end{itemize}
         \item[>] \mintinline[breaklines]{bash}{-w} (work directory): to indicate the working directory inside the container, in this case this directory is \mintinline[breaklines]{bash}{/wrk}.
+        \item[>] \mintinline[breaklines]{bash}{unike267/containers/impl-arty}: is the image from which the container will be launched.
+        \item[>] \mintinline[breaklines]{bash}{sh -c "shell/bash tasks"}: is explained in subsection \ref{shell:script}.
         \end{itemize}
     \item To use this command in Docker remplace \say{podman} with \say{docker}. 
     \end{itemize}

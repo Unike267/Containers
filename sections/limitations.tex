@@ -1,0 +1,17 @@
+\section{Limitations of the FLOS tools that integrate the container}
+
+\label{limit}
+
+First, it should be noted that functional bitstreams of the SoC have been achieved using this container for the Arty A7 35T and 100T FPGAs.
+
+\vspace{5mm} 
+
+\noindent However, the generation of the bitstream through these FLOS tools have a couple of limitations:
+
+\begin{itemize}
+\item Yosys synthesis, in the case of Xilinx, does not support an implementation using DSPs or distributed RAM (LUT RAM).
+Just as for Lattice this tool is very mature, for Xilinx this tool is at an early stage.
+\vspace{2mm}
+\item In case NEORV32 is synthesized with its own \say{app\_image}, without using the bootloader (in the example the bootloader is used), the IMEM implementation is limited (I use 6*1024 bits). Therefore, the size of the compiled programs is restricted.
+If a large IMEM is implemented, which in Vivado would be supported, the generated bitstream does not work.
+\end{itemize}

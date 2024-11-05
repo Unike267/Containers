@@ -1,0 +1,77 @@
+% CREDITS:
+% Comprehensive exam template for ECE Ph.D. students at Queen's University. by Jefferson Silveira
+\documentclass[a4paper,12pt,english]{article}
+\usepackage[left=30mm,top=30mm,right=30mm,bottom=30mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{mathpazo} % Use the Palatino font by default
+%\usepackage[skip=4pt plus1pt, indent=15pt]{parskip}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[newfloat]{minted} % Code listings, with syntax highlighting
+\usepackage[font=small,justification=centering]{caption}
+\usepackage{float}
+\usepackage[english]{babel}
+\usepackage[
+    left = \flqq{},% 
+    right = \frqq{},% 
+    leftsub = \flq{},% 
+    rightsub = \frq{} %
+]{dirtytalk}
+\usepackage[square,numbers,sort]{natbib}
+\usepackage[useregional]{datetime2}
+%\usepackage{indentfirst}
+%\setlength\parindent{14pt}
+
+
+%\renewcommand{\listingscaption}{Code}
+%\renewcommand{\listoflistingscaption}{List of Code}
+%
+\bibliographystyle{unsrtnat}
+
+\hypersetup{
+    colorlinks,
+    linkcolor={red!80},
+    citecolor={red!80},
+    urlcolor={red!80}
+}
+
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Code}
+
+\begin{document}
+
+\input{front}
+\tableofcontents
+\newpage
+%\listoffigures
+%\newpage
+%\listoftables
+%\newpage
+%\listofalgorithms % List of algorithms in pseudocode format
+%\newpage
+%\listoflistings % List of algorithms in code format
+%\newpage
+
+\pagenumbering{arabic} % Arabic page numbers (and reset to 1)
+
+% Sections
+\input{sections/introduction}
+\input{sections/run}
+\input{sections/limitations}
+\input{sections/ci}
+
+\clearpage % If you want the references in a separate page
+\bibliography{bibliography}
+
+%\clearpage % If you want the appendix in a separate page
+%\appendix
+%\input{sections/appendix}
+
+\end{document}
+

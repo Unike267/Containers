@@ -1,0 +1,76 @@
+\section{Implementation the workflow through CI}
+
+\label{ci}
+
+To generate bitstream through FLOS tools in GitHub Continous Integration (CI) you can use the following YML file:
+
+\begin{code}
+\begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,breaklines,linenos]{yaml}
+name: neorv32_impl
+
+on:
+  push:
+
+jobs:
+
+  neorv32_impl_35t:
+    runs-on: ubuntu-latest
+    env:
+      Board: 35t
+
+    steps:
+
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+
+      - uses: docker://ghcr.io/unike267/containers/impl-arty:latest
+        with:
+          args: ./test.sh
+      
+      - name: 'Upload artifact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: neorv32_impl_35t
+          path: ./neorv32_test_setup_bootloader_35t.bit
+
+  neorv32_impl_100t:
+    runs-on: ubuntu-latest
+    env:
+      Board: 100t
+
+    steps:
+
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+
+      - uses: docker://ghcr.io/unike267/containers/impl-arty:latest
+        with:
+          args: ./test.sh
+      
+      - name: 'Upload artifact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: neorv32_impl_100t
+          path: ./neorv32_test_setup_bootloader_100t.bit
+\end{minted}
+\caption{YML file to generate bitstream through FLOS tools in CI.}
+\label{cod:7}
+\end{code}
+
+\vspace{5mm}
+
+\noindent Lines 10-11 and 30-31 set the environment variable.
+
+\vspace{5mm}
+
+\noindent Lines 18 and 38 set the container.
+
+\vspace{5mm}
+
+\noindent Lines 20 and 40 run the script through the container.
+
+
+\vspace{5mm}
+
+\noindent Lines 22-23-24-25-26 and 42-43-44-45-46 upload the generated bitstream as an artifact.
+

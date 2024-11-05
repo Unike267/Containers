@@ -1,0 +1,237 @@
+\section{Example: run the container}
+
+\label{run}
+
+Now the basic concepts of the \ref{intro} section are going to be applied to generate the NEORV32 RISC-V soft-core bitstream for the Arty A7 35T and 100T from the VHDL code available in the following repository \cite{gh:neorv32} \cite{gh:neorv32-setups}.
+
+\vspace{5mm}
+
+\noindent This example is uploaded and run in CI in the following branch \href{https://github.com/Unike267/Containers/tree/neorv32-setups}{gh:Unike267 /Containers/tree/neorv32-setups}.
+The script that is used in this example is as follows:
+
+\begin{code}
+\begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,breaklines,linenos]{bash}
+#!/usr/bin/env bash
+
+set -ex
+
+cd $(dirname "$0")
+
+if [[ -z "${Board}" ]]; then
+  Arty='35t'
+elif [[ $Board == '35t' ]]; then
+  Arty='35t'
+elif [[ $Board == '100t' ]]; then
+  Arty='100t'
+else
+  echo "Error Board must be 35t or 100t"
+  exit
+fi
+
+echo "Selected board is" $Arty
+
+apt update -qq
+
+apt install -y git
+
+git clone --recursive https://github.com/stnolting/neorv32-setups
+
+mkdir -p build
+
+echo "Analyze NEORV32 CPU"
+
+ghdl -i --workdir=build --work=neorv32  ./neorv32-setups/neorv32/rtl/core/*.vhd
+ghdl -i --workdir=build --work=neorv32 ./neorv32-setups/neorv32/rtl/test_setups/neorv32_test_setup_bootloader.vhd
+ghdl -m --workdir=build --work=neorv32 neorv32_test_setup_bootloader
+
+echo "Synthesis with yosys and ghdl as module"
+
+yosys -m ghdl -p 'ghdl --workdir=build --work=neorv32 neorv32_test_setup_bootloader; synth_xilinx -nodsp -nolutram -flatten -abc9 -arch xc7 -top neorv32_test_setup_bootloader; write_json neorv32_test_setup_bootloader.json' 
+
+if [[ $Arty == '35t' ]]; then
+  echo "Place and route"
+  nextpnr-xilinx --chipdb /usr/local/share/nextpnr/xilinx-chipdb/xc7a35t.bin --xdc arty.xdc --json neorv32_test_setup_bootloader.json --write neorv32_test_setup_bootloader_routed.json --fasm neorv32_test_setup_bootloader.fasm
+  echo "Generate bitstream"
+  ../../prjxray/utils/fasm2frames.py --part xc7a35tcsg324-1 --db-root /usr/local/share/nextpnr/prjxray-db/artix7 neorv32_test_setup_bootloader.fasm > neorv32_test_setup_bootloader.frames
+  ../../prjxray/build/tools/xc7frames2bit --part_file /usr/local/share/nextpnr/prjxray-db/artix7/xc7a35tcsg324-1/part.yaml --part_name xc7a35tcsg324-1 --frm_file neorv32_test_setup_bootloader.frames --output_file neorv32_test_setup_bootloader_35t.bit
+elif [[ $Arty == '100t' ]]; then
+  echo "Place and route"
+  nextpnr-xilinx --chipdb /usr/local/share/nextpnr/xilinx-chipdb/xc7a100t.bin --xdc arty.xdc --json neorv32_test_setup_bootloader.json --write neorv32_test_setup_bootloader_routed.json --fasm neorv32_test_setup_bootloader.fasm
+  echo "Generate bitstream"
+  ../../prjxray/utils/fasm2frames.py --part xc7a100tcsg324-1 --db-root /usr/local/share/nextpnr/prjxray-db/artix7 neorv32_test_setup_bootloader.fasm > neorv32_test_setup_bootloader.frames
+  ../../prjxray/build/tools/xc7frames2bit --part_file /usr/local/share/nextpnr/prjxray-db/artix7/xc7a100tcsg324-1/part.yaml --part_name xc7a100tcsg324-1 --frm_file neorv32_test_setup_bootloader.frames --output_file neorv32_test_setup_bootloader_100t.bit
+fi
+
+echo "Implementation completed"
+\end{minted}
+\caption{The shell/bash script to generate NEORV32 bistream from its VHDL code.}
+\label{cod:4}
+\end{code}
+
+\vspace{5mm}
+
+\noindent Each piece of this script is explained in the following subsections.
+
+\subsection{Intro \& set board: from line 1 to line 18}
+
+The first line is the shebang, this concept is explained in \ref{shebang}.
+
+\vspace{5mm}
+
+\noindent The third line, \mintinline[breaklines]{bash}{set -ex}, is the conbination of \mintinline[breaklines]{bash}{set -e} and \mintinline[breaklines]{bash}{set -x}. 
+The first one indicates to exit the script as soon as any line in the bash script fails. The second one prints each command that is going to be executed with a little plus.
+
+\vspace{5mm}
+
+\noindent The fifth line, \mintinline[breaklines]{bash}{cd $(dirname "$0")}, identifies and locates in the directory that contains the script (which might be different than the current working directory). 
+Suppose your script is /home/wherever/your\_script.sh. In this context, \mintinline[breaklines]{bash}{$0} is your\_script.sh, \mintinline[breaklines]{bash}{$(dirname "$0")} is /home/wherever/ and  \mintinline[breaklines]{bash}{cd} command is located in that path.
+
+\vspace{5mm}
+
+\noindent From line 7 to line 16 the environment variable \say{Board} is introduced in the local variable \say{Arty}.
+If the environment variable would not exist \mintinline[breaklines]{bash}{[-z "${Board}"]}, the Arty variable would be set to 35t.
+
+\vspace{5mm}
+
+\noindent Line 18 just displays the value of the local variable \say{Arty}.
+
+\subsection{Download NEORV32 sources: from line 20 to line 24}
+
+\label{ci:lines}
+
+Ignore this step if you are going to use your own VHDL code.
+
+\vspace{5mm}
+
+\noindent If your are going to follow this example (implementation of NEORV32) but you are performing it in local and you have GIT insatalled, ignore line 20 and line 22. 
+This lines are thought to perform the example through Continous Integration (CI).
+
+\vspace{5mm}
+
+\noindent Line 24 downloads the \say{neorv32-setups} repository  from GitHub. 
+This repository has the \say{neorv32} repository as a submodule, so the argument \mintinline[breaklines]{bash}{--recursive} is used to add it.
+
+\subsection{VHDL compilation through GHDL: from line 26 to line 32}
+
+Line 26 creates a directory named \say{build} to store in it the compilation output files. The \mintinline[breaklines]{bash}{-p} argument means \say{parents} and it uses to create a directory with top-down approach. 
+That is, it offers the possibility of creating a directory inside another directory inside another etc (\mintinline[breaklines]{bash}{mkdir -p main/within_main}). 
+In this example only one directory is created so the \mintinline[breaklines]{bash}{-p} argument is not strictly necessary.
+
+\vspace{5mm}
+
+\noindent Line 28 displays the sentence within \mintinline[breaklines]{bash}{""}.
+
+\vspace{5mm} 
+
+\noindent Line 30 and 31 import the VHDL code through \mintinline[breaklines]{bash}{-i} argument. 
+In this context, \mintinline[breaklines]{bash}{--workdir} argument indicates the working directory where the output files will be stored and \mintinline[breaklines]{bash}{--work} argument indicates the \say{neorv32} library. 
+It should be noted that if you want to use VHDL 2008 standard you must add after \mintinline[breaklines]{bash}{-i} argument \mintinline[breaklines]{bash}{--std=08}.
+
+\vspace{5mm} 
+
+\noindent Line 32 performs the compilation through the argument make (\mintinline[breaklines]{bash}{-m}). 
+In this context, the top of the design must be indicated, in this case is \say{neorv32\_test\_setup \_bootloader}.
+In addition, the working directory and the library \say{neorv32} are set.
+
+\subsection{Synthesis with Yosys and GHDL as module: from line 34 to line 36}
+
+Line 34 displays the sentence within \mintinline[breaklines]{bash}{""}.
+
+\vspace{5mm} 
+
+\noindent Line 36 performs the synthesis through Yosys with GHDL as module. In this context, \mintinline[breaklines]{bash}{-m} argument load the specified \say{plugin} module, in this case \say{ghdl-yosys-plugin}. 
+Then, \mintinline[breaklines]{bash}{-p} argument execute the commands within \mintinline[breaklines]{bash}{''}.
+These commands are separated by \mintinline[breaklines]{bash}{;} forming three steps. 
+
+\vspace{5mm} 
+
+\noindent The first step is to perform the synthesis with GHDL (\mintinline[breaklines]{bash}{--synth}), consequently the working directory and the library \say{neorv32} are set.
+
+\vspace{5mm} 
+
+\noindent The second step is to perform the synthesis for Xilinx 7-Series FPGAs. This is indicated by \mintinline[breaklines]{bash}{synth_xilinx}. 
+In this context, you must disable the implementation using DSPs and distributed ram (LUT RAM).
+Since at the moment, Yosys doesn't support the mapping of these elements for Xilinix architectures, see \ref{limit} section. 
+The argument \mintinline[breaklines]{bash}{-flatten} flattens the design by replacing cells by their implementation. The argument \mintinline[breaklines]{bash}{-abc9} is to set ABC9 for technology mapping. 
+The argument \mintinline[breaklines]{bash}{-xc7} generates the synthesis netlist for the xc7 architecture family.
+The argument \mintinline[breaklines]{bash}{-top} indicates the top of the design.
+
+\vspace{5mm} 
+
+\noindent The third step write a JSON netlist of the current design named \say{neorv32\_test\_ setup\_bootloader.json}.
+
+\subsection{Perform P\&R and generate bitstrem for Arty A7 35t board: from line 38 to line 43}
+
+Line 38 select the task to perform P\&R and generate bitstrem for Arty A7 35t.
+
+\vspace{5mm} 
+
+\noindent Line 39 displays the sentence within \mintinline[breaklines]{bash}{""}.
+
+\vspace{5mm} 
+
+\noindent Line 40 performs P\&R through Nextpnr-Xilinx. 
+In this context, the argument \mintinline[breaklines]{bash}{--chipdb} select the chip data base, in this case the one related to the Arty 35t.
+Then, the .xcd file named \say{arty.xdc} is imported. \footnote{The sintaxys of the .xdc file is slightly different from the one supported by vivado, see the .xdc file of the example.} 
+Also, the yosys output JSON file is imported.
+Finally, the output routed files are written, in this case in JSON and FASM format. 
+
+\vspace{5mm} 
+
+\noindent Line 41 displays the sentence within \mintinline[breaklines]{bash}{""}.
+
+\vspace{5mm} 
+
+\noindent Lines 42 and 43 use the Python programs of the Project X-Ray to generate the bitstream from Nextpnr-Xilinx output FASM file.
+
+\subsection{Perform P\&R and generate bitstrem for Arty A7 100t board: from line 44 to line 50}
+
+Line 44 select the task to perform P\&R and generate bitstrem for Arty A7 100t.
+
+\vspace{5mm} 
+
+\noindent Line 45 displays the sentence within \mintinline[breaklines]{bash}{""}.
+
+\vspace{5mm} 
+
+\noindent Line 46 performs P\&R through Nextpnr-Xilinx. 
+In this context, the argument \mintinline[breaklines]{bash}{--chipdb} select the chip data base, in this case the one related to the Arty 100t.
+Then, the .xcd file named \say{arty.xdc} is imported.
+Also, the yosys output JSON file is imported. \footnote{The yosys output JSON file is the same for both boards.}
+Finally, the output routed files are written, in this case in JSON and FASM format. 
+
+\vspace{5mm} 
+
+\noindent Line 47 displays the sentence within \mintinline[breaklines]{bash}{""}.
+
+\vspace{5mm} 
+
+\noindent Lines 48 and 49 use the Python programs of the Project X-Ray to generate the bitstream from Nextpnr-Xilinx output FASM file.
+
+\subsection{Commands to generate bitstream through the container.}
+
+To generate the bitstream through the container just apply code \ref{cod:5} for the Arty A7 35t and code \ref{cod:6} for the Arty A7 100t. 
+In this context, the \say{script.h} for the case of the example is the code \ref{cod:4}.
+
+\vspace{5mm} 
+
+\noindent Remember, if you run this command locally, ignore the corresponding lines according to subsection \ref{ci:lines}.
+
+\begin{code}
+\begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,breaklines]{bash}
+podman run --rm -itv $(pwd):/wrk:Z -w /wrk unike267/containers/impl-arty sh -c "Board=35t && script.sh"
+\end{minted}
+\caption{Command to generate bitstream for the Arty A7 35t.}
+\label{cod:5}
+\end{code}
+
+\begin{code}
+\begin{minted}[frame=lines,framesep=2mm,baselinestretch=1.2,fontsize=\footnotesize,breaklines]{bash}
+podman run --rm -itv $(pwd):/wrk:Z -w /wrk unike267/containers/impl-arty sh -c "Board=100t && script.sh"
+\end{minted}
+\caption{Command to generate bitstream for the Arty A7 100t.}
+\label{cod:6}
+\end{code}
+
+\vspace{15mm} 
+

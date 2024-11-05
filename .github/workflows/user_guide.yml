@@ -1,0 +1,24 @@
+name: user_guide
+
+on:
+  push:
+
+jobs:
+
+  user_guide_generation:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: '🧰 Checkout'
+        uses: actions/checkout@v4
+
+      - uses: docker://ghcr.io/unike267/containers/latex-pygments:latest
+        with:
+          args: ./make.sh
+      
+      - name: '📤 Upload artifact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: USER_GUIDE_ARTY_IMPL_FLOS_CONTAINER
+          path: ./main.pdf

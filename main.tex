@@ -46,9 +46,12 @@
 
 \begin{document}
 
+\pagenumbering{gobble} % remove page numbers (and reset to 1)
+
 \input{front}
 \tableofcontents
 \newpage
+
 %\listoffigures
 %\newpage
 %\listoftables
@@ -66,6 +69,7 @@
 \input{sections/limitations}
 \input{sections/ci}
 \input{sections/ofl}
+\input{sections/check}
 
 \clearpage % If you want the references in a separate page
 \bibliography{bibliography}

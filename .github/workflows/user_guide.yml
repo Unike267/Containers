@@ -2,7 +2,12 @@ name: user_guide
 
 on:
   push:
+  release:
+    types:
+      - published
 
+permissions:
+  contents: write
 jobs:
 
   user_guide_generation:
@@ -21,4 +26,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: USER_GUIDE_ARTY_IMPL_FLOS_CONTAINER
-          path: ./main.pdf
+          path: ./Impl-FLOS-UG.pdf
+
+      - name: '📤 Upload Release Assets'
+        run: gh release upload --repo Unike267/Containers --clobber $TAG $FILES
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: UG
+          FILES: ./Impl-FLOS-UG.pdf

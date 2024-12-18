@@ -1,38 +1,15 @@
-FROM gcr.io/hdl-containers/impl/icestorm
+FROM ghcr.io/hdl/impl/icestorm
 
-ARG USERNAME=unike
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
 
-RUN cd $(dirname "$0") \ 
-# Create the user; Modify ID from 0 to 1000
-# This is done because in prjxray/Makefile in line 17-18 the user id is checked and if it is 0 the program stops
-&& groupadd --gid $USER_GID $USERNAME \
-&& useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-# Add sudo support
-&& apt update -qq \
-&& apt install -y sudo \
-&& echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-&& chmod 0440 /etc/sudoers.d/$USERNAME 
-
-RUN apt install -y git \
+RUN apt-get update -qq \
+&& apt-get install -y git \
 && apt install -y python3 python3-pip python3-yaml cmake\
-&& apt install -y cython3 \
+&& apt install -y cython3 
+
 # Clone prjxray repository and build
-&& sudo git clone https://github.com/SymbiFlow/prjxray.git \
+RUN git clone --recursive https://github.com/SymbiFlow/prjxray.git \
 && cd prjxray \
-&& git submodule update --init --recursive 
-
-USER $USERNAME
-
-RUN sudo chown -R unike prjxray \
-&& cd prjxray \
-&& make build
-
-USER root
-
-RUN chown -R root prjxray \
-&& cd prjxray \
+&& make ALLOW_ROOT=1 build \
 && python3 setup.py install \
 && cd third_party/fasm \
 && python3 setup.py install \
@@ -43,10 +20,9 @@ RUN chown -R root prjxray \
 && cd .. 
 
 # Clone nextpnr-xilinx repository, build and install
-RUN apt install -y libeigen3-dev \
-&& git clone https://github.com/gatecat/nextpnr-xilinx.git \
+RUN apt-get install -y libeigen3-dev \
+&& git clone --recursive https://github.com/gatecat/nextpnr-xilinx.git \
 && cd nextpnr-xilinx \
-&& git submodule update --init --recursive \
 && mkdir build \
 && cd build \
 && cmake ../ -DARCH=xilinx -DBUILD_GUI=OFF -DBUILD_PYTHON=OFF \

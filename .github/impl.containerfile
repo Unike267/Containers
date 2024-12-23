@@ -8,7 +8,12 @@ RUN apt-get update -qq \
 
 # Clone prjxray repository and build
 RUN git clone --recursive https://github.com/SymbiFlow/prjxray.git \
-&& cd prjxray \
+# Temporary fix as a consequence of the issue https://github.com/f4pga/prjxray/issues/2472
+&& cd prjxray/third_party/yaml-cpp \
+&& git checkout 84459a7f982ea4d10e943237b2e9c71afdab6a45 \
+&& cd ../.. \
+&& sed -i '42s/^/#/' Makefile \
+# (When the issue is fixed these three commands should be removed)
 && make ALLOW_ROOT=1 build \
 && python3 setup.py install \
 && cd third_party/fasm \

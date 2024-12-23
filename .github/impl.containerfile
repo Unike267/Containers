@@ -3,8 +3,8 @@ FROM ghcr.io/hdl/impl/icestorm
 
 RUN apt-get update -qq \
 && apt-get install -y git \
-&& apt install -y python3 python3-pip python3-yaml cmake\
-&& apt install -y cython3 
+&& apt-get install -y python3 python3-pip python3-yaml cmake\
+&& apt-get install -y cython3 
 
 # Clone prjxray repository and build
 RUN git clone --recursive https://github.com/SymbiFlow/prjxray.git \

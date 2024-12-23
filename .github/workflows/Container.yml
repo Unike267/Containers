@@ -51,3 +51,23 @@ jobs:
 
       - name: '🔐 Logout of ghcr.io'
         run: podman logout $IMAGE_REGISTRY
+
+  urv-sw-tool-spec-def_container:
+    runs-on: ubuntu-latest
+    
+    steps:
+
+      - name: '🧰 Checkout'
+        uses: actions/checkout@v4
+
+      - name: '⛴️ Build container'
+        run: podman build -t ghcr.io/unike267/containers/urv-sw-tool-spec-def - < .github/urv-toolchain-spec_def.containerfile
+
+      - name: '🔑 Login to ghcr.io'
+        run: echo $REGISTRY_PASSWORD | podman login $IMAGE_REGISTRY -u $REGISTRY_USER --password-stdin
+      
+      - name: '🛰️ Push image to ghcr.io'
+        run: podman push ghcr.io/unike267/containers/urv-sw-tool-spec-def
+
+      - name: '🔐 Logout of ghcr.io'
+        run: podman logout $IMAGE_REGISTRY

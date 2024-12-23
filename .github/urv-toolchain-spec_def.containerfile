@@ -19,7 +19,6 @@ RUN apt-get update -qq \
 && apt-get install -y curl \
 && apt-get install -y xz-utils \
 && apt-get install -y make \
-&& apt-get install -y libseccomp-dev \
 && curl -L -o riscv-11.2-small.tgz https://ohwr.org/project/wrpc-sw/wikis/uploads/9f9224d2249848ed3e854636de9c08dc/riscv-11.2-small.tgz \
 && tar xzvf riscv-11.2-small.tgz -C . --no-same-owner --no-same-permissions \
 && export CROSS_COMPILE="/riscv-11.2-small/bin/riscv32-elf-" \

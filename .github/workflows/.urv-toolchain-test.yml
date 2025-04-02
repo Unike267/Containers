@@ -10,17 +10,16 @@ jobs:
 
   urv-toolchain-test_wrc_and_urv_hello_sw:
     runs-on: ubuntu-latest
-    env:
 
     steps:
 
       - name: '🧰 Checkout'
         uses: actions/checkout@v4
 
-      - uses: ghcr.io/unike267/containers/urv-toolchain
-        with:
-          args: ./test/urv-toolchain/test.sh
-      
+      - name: 'Run test'
+        run: |
+          podman pull ghcr.io/unike267/containers/urv-toolchain
+          podman run --rm -tv $(pwd):/wrk:Z -w /wrk unike267/containers/urv-toolchain:latest ./test/urv-toolchain/test.sh
       - name: '📤 Upload artifact'
         uses: actions/upload-artifact@v4
         with:

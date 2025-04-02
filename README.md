@@ -12,5 +12,5 @@ The **goal** of this repository is to build 🔨 and push 📤 containers in con
 - `ghcr.io/unike267/containers/latex-pygments:latest`
     - This container has: `latex` compiler with `pygments` program to use `minted` package
 
-- `ghcr.io/unike267/containers/urv-sw-tool-spec-def`
-    - This container has the compilation tool for [urv-core](https://ohwr.org/project/urv-core), configured for `spec def`.
+- `ghcr.io/unike267/containers/urv-toolchain`
+    - This container has the compilation tool for [urv-core](https://ohwr.org/project/urv-core).

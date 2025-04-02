@@ -1,0 +1,32 @@
+name: urv-toolchain-test
+
+on:
+  workflow_run:
+    workflows: [Container]
+    types:
+      - completed
+
+jobs:
+
+  urv-toolchain-test_wrc_and_urv_hello_sw:
+    runs-on: ubuntu-latest
+    env:
+
+    steps:
+
+      - name: '🧰 Checkout'
+        uses: actions/checkout@v4
+
+      - uses: ghcr.io/unike267/containers/urv-toolchain
+        with:
+          args: ./test/urv-toolchain/test.sh
+      
+      - name: '📤 Upload artifact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: urv-toolchain-test
+          path: |
+            ./wrc.vhd
+            ./wrc.bin
+            ./wrc.bram
+            ./main.o     

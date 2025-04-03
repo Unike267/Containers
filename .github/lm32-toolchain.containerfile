@@ -76,7 +76,5 @@ FROM base AS build
 ENV CROSS_COMPILE /opt/lm32/bin/lm32-elf-
 ENV PATH $PATH:/opt/lm32/bin
 
-RUN --mount=type=cache,from=download,src=/mount,target=/opt \
-    tar xvf /opt/lm32.tar.xz -C . --no-same-owner --no-same-permissions 
-
-RUN mv /lm32 /opt
+RUN --mount=type=cache,from=download,src=/mount,target=/tmp \
+    tar xvf /tmp/lm32.tar.xz -C /opt --no-same-owner --no-same-permissions 

@@ -33,6 +33,7 @@ RUN apt-get update -qq \
     libisl-dev \
     libmpc-dev \
     libreadline-dev \
+    libudev-dev \
     make \
     xz-utils \
     zlib1g-dev \
@@ -46,7 +47,5 @@ FROM base AS build
 ENV CROSS_COMPILE /opt/riscv-11.2-small/bin/riscv32-elf-
 ENV PATH $PATH:/opt/riscv-11.2-small/bin
 
-RUN --mount=type=cache,from=download,src=/mount,target=/opt \
-    tar xvf /opt/riscv-11.2-small.tgz -C . --no-same-owner --no-same-permissions 
-
-RUN mv /riscv-11.2-small /opt
+RUN --mount=type=cache,from=download,src=/mount,target=/tmp \
+    tar xvf /tmp/riscv-11.2-small.tgz -C /opt --no-same-owner --no-same-permissions 

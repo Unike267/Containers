@@ -26,7 +26,7 @@ VPATH = ../common ../
 LDS1 = ../common/user.ld
 LDS2 = ../ram.ld
 
-CC_FLAGS += -flto -Wl,--entry=0x00000800 -g -march=rv32i_zicsr_zifencei -mabi=ilp32 -Os -nostartfiles -lm -L $(LDS1) -L $(LDS2) -lc
+CC_FLAGS += -flto -Wl,--entry=0x00000800 -g -march=rv32i_zicsr_zifencei -mabi=ilp32 -Os -nostartfiles -lm -T $(LDS1) -T $(LDS2) -lc
 #-Wl,--entry=_start
 #-Wl,--gc-sections
 CFLAGS +=  $(CC_FLAGS) -I ../common -I ../ -ffunction-sections -fdata-sections -DFLAGS_STR="\"\""

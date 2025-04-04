@@ -1,0 +1,56 @@
+name: Container
+
+on:
+  push:
+
+env:
+  REGISTRY_USER: unike267
+  REGISTRY_PASSWORD: ${{ github.token }}
+  IMAGE_REGISTRY: ghcr.io/unike267
+
+permissions: write-all
+
+jobs:
+
+  urv-toolchain:
+    runs-on: ubuntu-latest
+    
+    steps:
+
+      - name: '🧰 Checkout'
+        uses: actions/checkout@v4
+
+      - name: '⛴️ Build container'
+        run: podman build -t ghcr.io/unike267/containers/urv-toolchain --target build - < .github/urv-toolchain.containerfile
+
+      - name: '🔑 Login to ghcr.io'
+        run: echo $REGISTRY_PASSWORD | podman login $IMAGE_REGISTRY -u $REGISTRY_USER --password-stdin
+      
+      - name: '🛰️ Push image to ghcr.io'
+        run: podman push ghcr.io/unike267/containers/urv-toolchain
+
+      - name: '🔐 Logout of ghcr.io'
+        run: podman logout $IMAGE_REGISTRY
+
+  urv-toolchain-test_wrc_and_urv_hello_sw:
+    runs-on: ubuntu-latest
+    needs: urv-toolchain
+
+    steps:
+
+      - name: '🧰 Checkout'
+        uses: actions/checkout@v4
+
+      - name: 'Run test'
+        run: |
+          podman pull ghcr.io/unike267/containers/urv-toolchain
+          podman run --rm -tv $(pwd):/wrk:Z -w /wrk unike267/containers/urv-toolchain:latest ./test/urv-toolchain/test.sh
+      - name: '📤 Upload artifact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: urv-toolchain-test
+          path: |
+            ./wrc.vhd
+            ./wrc.bin
+            ./wrc.bram
+            ./hello.ram   

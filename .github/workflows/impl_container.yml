@@ -1,15 +1,40 @@
-name: neorv32_impl
+name: Container
 
 on:
-  workflow_run:
-    workflows: [Container]
-    types:
-      - completed
+  push:
+
+env:
+  REGISTRY_USER: unike267
+  REGISTRY_PASSWORD: ${{ github.token }}
+  IMAGE_REGISTRY: ghcr.io/unike267
+
+permissions: write-all
 
 jobs:
 
+  impl_container:
+    runs-on: ubuntu-latest
+    
+    steps:
+
+      - name: '🧰 Checkout'
+        uses: actions/checkout@v4
+
+      - name: '⛴️ Build container'
+        run: podman build -t ghcr.io/unike267/containers/impl-arty - < .github/impl.containerfile
+
+      - name: '🔑 Login to ghcr.io'
+        run: echo $REGISTRY_PASSWORD | podman login $IMAGE_REGISTRY -u $REGISTRY_USER --password-stdin
+      
+      - name: '🛰️ Push image to ghcr.io'
+        run: podman push ghcr.io/unike267/containers/impl-arty
+
+      - name: '🔐 Logout of ghcr.io'
+        run: podman logout $IMAGE_REGISTRY
+
   neorv32_impl_35t:
     runs-on: ubuntu-latest
+    needs: impl_container
     env:
       Board: 35t
 
@@ -30,6 +55,7 @@ jobs:
 
   neorv32_impl_100t:
     runs-on: ubuntu-latest
+    needs: impl_container
     env:
       Board: 100t
 

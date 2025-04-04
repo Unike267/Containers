@@ -20,14 +20,10 @@ cd ..
 
 git clone --recursive https://ohwr.org/project/urv-core
 
+mv Makefile urv-core/sw/hello
+
 cd urv-core
 
-make ARCH="rv32g" -C sw/hello
+make -C sw/hello
 
-mv sw/hello/main.o ../../..
-
-
-
-
-
-
+mv sw/hello/hello.ram ../../..

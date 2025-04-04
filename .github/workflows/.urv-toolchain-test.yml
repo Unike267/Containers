@@ -28,4 +28,4 @@ jobs:
             ./wrc.vhd
             ./wrc.bin
             ./wrc.bram
-            ./main.o     
+            ./hello.ram   

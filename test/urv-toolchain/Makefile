@@ -21,7 +21,7 @@ SIZE    = $(RISCV_PREFIX)size
 
 VPATH = ../common ../
 
-OBJECTS = main.c  $(VPATH)/board.h  $(VPATH)/uart.h
+#OBJECTS = main.c  $(VPATH)/board.h  $(VPATH)/uart.h
 
 LDS1 = ../common/user.ld
 LDS2 = ../ram.ld
@@ -55,4 +55,5 @@ clean:
 	rm -f *.elf *.bin *.o *.S *.ram
 
 %.o:	%.S
-	${CC} -c $^ -o $@
+	${CC} -c $(CFLAGS) $< -o $@
+

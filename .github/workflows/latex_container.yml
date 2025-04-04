@@ -1,4 +1,4 @@
-name: Container
+name: LaTeX-Container
 
 on:
   push:

@@ -15,10 +15,11 @@ Through NEORV32 🚀 bitstream generation 🔗. From:
         - `Arty A7 35t`
         - `Arty A7 100t`
 
-- These bitstreams are available in the repository [actions](https://github.com/Unike267/Containers/actions).
-    - Workflow: `neorv32_impl` 
-    - Artifact names:
-        - `neorv32_impl_100t` 
-        - `neorv32_impl_35t`  
+- The results are available in the repository's [actions](https://github.com/Unike267/Containers/actions) section.
+    - Workflow: `Impl-Container` 
+      - Jobs: `neorv32_impl_35t` and `neorv32_impl_100t`
+        - Artifact names:
+          - `neorv32_test_setup_bootloader_35t.bit` 
+          - `neorv32_test_setup_bootloader_100t.bit` 
 
 

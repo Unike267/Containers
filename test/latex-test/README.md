@@ -6,9 +6,8 @@
 
 **Goal:**
 
-- Generate pdf through latex compilation using the `minted` package.
-
-- The generated PDF file is available in the repository [actions](https://github.com/Unike267/Containers/actions).
-    - Workflow: `latex_test` 
-    - Artifact names:
-        - `pdf_output` 
+- Generate a PDF via LaTeX compilation using the `minted` package. The result is available in the repository's [actions](https://github.com/Unike267/Containers/actions) section.
+    - Workflow: `LaTeX-Container` 
+      - Job: `latex_test`
+        - Artifact name:
+          - `latex-test.pdf` 

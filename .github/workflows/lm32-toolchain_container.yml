@@ -51,6 +51,7 @@ jobs:
           cd ppsi/
           git checkout origin/hm-cute-a7-v4.2
           cd ..
+          mv ../test.sh .
           podman pull ghcr.io/unike267/containers/lm32-toolchain
           podman run --rm -tv $(pwd):/wrk:Z -w /wrk unike267/containers/lm32-toolchain:latest ./test.sh
       - name: '📤 Upload artifact'

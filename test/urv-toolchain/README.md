@@ -2,7 +2,7 @@
 
 🚚 Test to check the following container: 🚚
 
-- `ghcr.io/unike267/containers/urv-sw-tool-spec-def:latest` 
+- `ghcr.io/unike267/containers/urv-toolchain:latest` 
 
 Through compilation of the `wrc` from `ohwr.org/project/wrpc-sw` and `sw/hello` program from `ohwr.org/project/urv-core` RISC-V core 🚀. 
 

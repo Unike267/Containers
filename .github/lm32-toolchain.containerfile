@@ -46,6 +46,7 @@ RUN echo > /etc/apt/sources.list \
     g++ \
     git \
     gnupg \
+    lib32z1 \
     libc6-dev-i386 \
     libc6-i386 \
     libgmp3-dev \

@@ -50,15 +50,15 @@ jobs:
           git switch hm-cute-a7-v4.2
           cd ppsi/
           git checkout origin/hm-cute-a7-v4.2
-          cd ..
-          mv ../test.sh .
+          cd ../../../..
           podman pull ghcr.io/unike267/containers/lm32-toolchain
-          podman run --rm -tv $(pwd):/wrk:Z -w /wrk unike267/containers/lm32-toolchain:latest ./test.sh
+          podman run --rm -tv $(pwd):/wrk:Z -w /wrk unike267/containers/lm32-toolchain:latest ./test/lm32-toolchain/test.sh
       - name: '📤 Upload artifact'
         uses: actions/upload-artifact@v4
         with:
           name: lm32-toolchain-test
           path: |
+            ./wrc.vhd
             ./wrc.bin
             ./wrc.elf
             ./wrc.bram

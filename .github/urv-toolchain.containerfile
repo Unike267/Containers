@@ -19,7 +19,7 @@ RUN apt-get update -qq \
  && DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends \
     ca-certificates \
     curl \
- && curl -L -o riscv-11.2-small.tgz https://ohwr.org/project/wrpc-sw/wikis/uploads/9f9224d2249848ed3e854636de9c08dc/riscv-11.2-small.tgz \
+ && curl -L -o riscv-11.2-small.tgz https://gitlab.com/ohwr/project/wrpc-sw/-/wikis/uploads/9f9224d2249848ed3e854636de9c08dc/riscv-11.2-small.tgz \
  && mkdir mount \
  && mv riscv-11.2-small.tgz mount 
 

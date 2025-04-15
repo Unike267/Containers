@@ -22,7 +22,7 @@ RUN apt-get update -qq \
     ca-certificates \
     curl \
  && curl -L -o gcc-$GCC_VER.tar.gz  http://ftp.gnu.org/gnu/gcc/gcc-$GCC_VER/gcc-$GCC_VER.tar.gz \
- && curl -L -o lm32.tar.xz https://ohwr.org/project/wr-cores/uploads/a2e8eeba448fbc8d580e68004e6f6c7f/lm32.tar.xz \
+ && curl -L -o lm32.tar.xz https://gitlab.com/ohwr/project/wr-cores/-/wikis/uploads/a2e8eeba448fbc8d580e68004e6f6c7f/lm32.tar.xz \
  && mkdir mount \
  && mv gcc-$GCC_VER.tar.gz mount \
  && mv lm32.tar.xz mount 

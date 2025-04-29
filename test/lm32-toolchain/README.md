@@ -4,10 +4,10 @@
 
 - `ghcr.io/unike267/containers/lm32-toolchain:latest` 
 
-Through compilation of the `wrc` from `ohwr.org/project/wrpc-sw`.
+Through compilation of the `wrc` from `ohwr/project/wrpc-sw`.
 
 - Sources: 
-  - [wrpc-sw](https://ohwr.org/project/wrpc-sw)
+  - [wrpc-sw](https://gitlab.com/ohwr/project/wrpc-sw)
 
 **Goals:**
 

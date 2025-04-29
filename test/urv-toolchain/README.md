@@ -4,11 +4,11 @@
 
 - `ghcr.io/unike267/containers/urv-toolchain:latest` 
 
-Through compilation of the `wrc` from `ohwr.org/project/wrpc-sw` and `sw/hello` program from `ohwr.org/project/urv-core` RISC-V core 🚀. 
+Through compilation of the `wrc` from `ohwr/project/wrpc-sw` and `sw/hello` program from `ohwr/project/urv-core` RISC-V core 🚀. 
 
 - Sources: 
-  - [wrpc-sw](https://ohwr.org/project/wrpc-sw)
-  - [urv-core](https://ohwr.org/project/urv-core), [sw/hello](https://ohwr.org/project/urv-core/-/tree/master/sw/hello?ref_type=heads).
+  - [wrpc-sw](https://gitlab.com/ohwr/project/wrpc-sw)
+  - [urv-core](https://gitlab.com/ohwr/project/urv-core), [sw/hello](https://gitlab.com/ohwr/project/urv-core/-/tree/master/sw/hello).
 
 **Goals:**
 

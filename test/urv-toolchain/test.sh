@@ -4,7 +4,7 @@ set -ex
 
 cd $(dirname "$0")
 
-git clone --recursive https://ohwr.org/project/wrpc-sw
+git clone --recursive https://gitlab.com/ohwr/project/wrpc-sw
 
 cd wrpc-sw
 
@@ -18,7 +18,7 @@ mv wrc.bram ../../..
 
 cd ..
 
-git clone --recursive https://ohwr.org/project/urv-core
+git clone --recursive https://gitlab.com/ohwr/project/urv-core
 
 mv Makefile urv-core/sw/hello
 

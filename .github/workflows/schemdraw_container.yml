@@ -1,0 +1,52 @@
+name: Schemdraw-Container
+
+on:
+  push:
+
+env:
+  REGISTRY_USER: unike267
+  REGISTRY_PASSWORD: ${{ github.token }}
+  IMAGE_REGISTRY: ghcr.io/unike267
+
+permissions: write-all
+
+jobs:
+
+  schemdraw_container:
+    runs-on: ubuntu-latest
+    
+    steps:
+
+      - name: '🧰 Checkout'
+        uses: actions/checkout@v4
+
+      - name: '⛴️ Build container'
+        run: podman build -t ghcr.io/unike267/containers/schemdraw --target build - < .github/schemdraw.containerfile
+
+      - name: '🔑 Login to ghcr.io'
+        run: echo $REGISTRY_PASSWORD | podman login $IMAGE_REGISTRY -u $REGISTRY_USER --password-stdin
+      
+      - name: '🛰️ Push image to ghcr.io'
+        run: podman push ghcr.io/unike267/containers/schemdraw
+
+      - name: '🔐 Logout of ghcr.io'
+        run: podman logout $IMAGE_REGISTRY
+
+  schemdraw_test:
+    runs-on: ubuntu-latest
+    needs: schemdraw_container
+
+    steps:
+
+      - name: '🧰 Checkout'
+        uses: actions/checkout@v4
+
+      - uses: docker://ghcr.io/unike267/containers/schemdraw:latest
+        with:
+          args: ./test/schemdraw/test_diagram.py
+      
+      - name: '📤 Upload artifact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: svg_output
+          path: test_diagram.svg

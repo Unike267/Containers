@@ -12,8 +12,12 @@ The **goal** of this repository is to build 🔨 and push 📤 containers in con
 - `ghcr.io/unike267/containers/latex-pygments:latest`
     - This container has: `latex` compiler with `pygments` program to use `minted` package
 
-- `ghcr.io/unike267/containers/urv-toolchain`
+- `ghcr.io/unike267/containers/urv-toolchain:latest`
     - This container has the compilation tool for [urv-core](https://gitlab.com/ohwr/project/urv-core).
 
 - `ghcr.io/unike267/containers/lm32-toolchain:latest` 
     - This container has the compilation tool for [lm32](https://gitlab.com/ohwr/project/general-cores/-/tree/master/modules/wishbone/wb_lm32).
+
+- `ghcr.io/unike267/containers/schemdraw:latest`
+    - This container has the drawing tool [schemdraw](https://github.com/cdelker/schemdraw).
+

@@ -43,10 +43,10 @@ jobs:
 
       - uses: docker://ghcr.io/unike267/containers/latex-pygments:latest
         with:
-          args: ./test/latex-test/make.sh
+          args: ./test/latex-pygments/make.sh
       
       - name: '📤 Upload artifact'
         uses: actions/upload-artifact@v4
         with:
           name: pdf_output
-          path: ./test/latex-test/latex-test.pdf
+          path: ./test/latex-pygments/latex-pygments.pdf

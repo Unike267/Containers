@@ -10,4 +10,4 @@
     - Workflow: `LaTeX-Container` 
       - Job: `latex_test`
         - Artifact name:
-          - `latex-test.pdf` 
+          - `latex-pygments.pdf` 

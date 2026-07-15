@@ -51,4 +51,5 @@ RUN python3 -m venv $VIRTUAL_ENV
 # Install schemdraw from .whl pkg, see https://docs.docker.com/reference/dockerfile/#run---mount
 RUN --mount=type=cache,from=pkg,src=/opt/schemdraw/,target=/schemdraw/ \
     pip3 install -U /schemdraw/*.whl \
+ && pip3 install ziamath \
  && rm -rf ~/.cache 

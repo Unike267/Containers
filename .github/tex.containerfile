@@ -9,9 +9,9 @@
 #
 #     https://www.gnu.org/licenses/gpl-3.0.html
 
-MAINTAINER <unike267@gmail.com>
-
 FROM docker.io/btdi/latex AS base
+
+MAINTAINER <unike267@gmail.com>
 
 RUN apt-get update -qq \
  && DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends \

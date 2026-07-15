@@ -11,9 +11,9 @@
 
 # LM32 cross compiling tool
 
-MAINTAINER <unike267@gmail.com>
-
 FROM ubuntu:latest AS download
+
+MAINTAINER <unike267@gmail.com>
 
 ARG GCC_VER="4.5.3"
 

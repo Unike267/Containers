@@ -11,9 +11,9 @@
 
 # Schemdraw container
 
-MAINTAINER <unike267@gmail.com>
-
 FROM ubuntu:latest AS base
+
+MAINTAINER <unike267@gmail.com>
 
 RUN apt-get update -qq \
  && DEBIAN_FRONTEND=noninteractive apt-get -y install --no-install-recommends \
